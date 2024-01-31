@@ -1,8 +1,7 @@
-import type { TextProps } from "react-native";
+import type { ViewProps } from "react-native";
 import type { ICarouselInstance } from "react-native-reanimated-carousel";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
-  Button,
   Dimensions,
   Image,
   Pressable,
@@ -63,7 +62,14 @@ export default function Index() {
 }
 
 function NumberPickCarousel() {
+  const [indexMode, setIndexMode] = useState(0);
   const refCarousel = useRef<ICarouselInstance>(null);
+
+  const updateIndex = (index: number) => {
+    refCarousel.current?.scrollTo({ index: index, animated: true });
+    setIndexMode(index);
+  };
+
   const width = Dimensions.get("window").width;
   const modes = [
     {
@@ -96,16 +102,16 @@ function NumberPickCarousel() {
   return (
     <View>
       <ScrollView
-        className="max-h-10 bg-black"
+        className="max-h-20 bg-black py-3"
         horizontal
         contentContainerStyle={{ gap: 10, alignItems: "center" }}
       >
         {modes.map((mode, index) => (
           <NumberPickButton
             key={index}
-            onPress={() =>
-              refCarousel.current?.scrollTo({ index: index, animated: true })
-            }
+            index={index}
+            active={index === indexMode}
+            onPress={() => updateIndex(index)}
           >
             {mode.name}
           </NumberPickButton>
@@ -116,24 +122,29 @@ function NumberPickCarousel() {
           ref={refCarousel}
           loop
           width={width * 0.9}
-          height={400}
+          height={390}
           data={modes}
           scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log("current index:", index)}
+          onSnapToItem={(index) => setIndexMode(index)}
           renderItem={({ index, item }) => (
-            <View
-              key={index}
-              className="flex-1 rounded-3xl border-2 border-white bg-black p-7"
-            >
+            <View key={index} className="flex-1 rounded-2xl bg-black p-7">
               <Text className="text-semibold text-2xl text-white">
                 {item.name}
               </Text>
-              <Text className="mt-1 text-white">{item.description}</Text>
-              <Image
-                source={item.cover}
-                style={{ width: 300, height: 200, borderRadius: 10 }}
-              ></Image>
-              <Button onPress={() => alert("todo")} title="번호뽑기"></Button>
+              <Text className="mt-1 h-12 text-white">{item.description}</Text>
+              {index != 0 ? (
+                <View className="flex-1 items-center">
+                  <Image
+                    source={item.cover}
+                    style={{ width: 300, height: 200, borderRadius: 10 }}
+                  ></Image>
+                  <Pressable className="mt-5 w-full rounded-xl bg-white">
+                    <Text className="py-4 text-center font-bold text-black">
+                      번호 뽑기
+                    </Text>
+                  </Pressable>
+                </View>
+              ) : null}
             </View>
           )}
         />
@@ -142,16 +153,22 @@ function NumberPickCarousel() {
   );
 }
 
-function NumberPickButton(props: TextProps & { onPress: () => void }) {
-  const { className, children } = props;
+function NumberPickButton(
+  props: ViewProps & { onPress: () => void; active: boolean; index: number },
+) {
+  const { onPress, active, index, children } = props;
   return (
-    <Pressable onPress={() => alert(children)}>
-      <Text
-        className={`justify-center rounded-full bg-[#1B1C20] px-3 py-2 align-middle text-white ${className}`}
+    <Pressable onPress={onPress}>
+      <View
+        className={`justify-center rounded-full border-2 px-3 py-1 align-middle ${
+          active ? "bg-[#6E2BFC]" : "bg-[#1B1C20]"
+        } ${index == 0 ? "border-dashed border-white" : "border-[#1B1C20]"}`}
         {...props}
       >
-        {children}
-      </Text>
+        <Text className="text-center align-middle text-sm font-semibold text-white">
+          {index != 0 ? children : `${children?.toString()} +`}
+        </Text>
+      </View>
     </Pressable>
   );
 }
