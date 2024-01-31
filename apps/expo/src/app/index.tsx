@@ -2,6 +2,7 @@ import type { TextProps } from "react-native";
 import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import React, { useRef } from "react";
 import {
+  Button,
   Dimensions,
   Image,
   Pressable,
@@ -64,7 +65,33 @@ export default function Index() {
 function NumberPickCarousel() {
   const refCarousel = useRef<ICarouselInstance>(null);
   const width = Dimensions.get("window").width;
-  const modes = ["직접조합", "랜덤뽑기", "우주추천", "미출현 번호", "짝홀조합"];
+  const modes = [
+    {
+      name: "직접조합",
+      description: "최대 6개 번호를 무작위로 랜덤 추첨합니다.",
+      cover: require("./images/cover-random-pick.png"),
+    },
+    {
+      name: "랜덤뽑기",
+      description: "당첨번호와 선호 번호 생성 데이터에 기반한 추천 방식이에요.",
+      cover: require("./images/cover-random-pick.png"),
+    },
+    {
+      name: "우주추천",
+      description: "한달 간 추첨되지 않은 번호 조합이에요.",
+      cover: require("./images/cover-universe-pick.png"),
+    },
+    {
+      name: "짝홀조합",
+      description: "짝수, 홀수 조합으로 추첨해드려요.",
+      cover: require("./images/cover-odd-even-pick.png"),
+    },
+    {
+      name: "미출현 번호",
+      description: "2개 회차의 1등 번호 조합이에요.",
+      cover: require("./images/cover-missing-pick.png"),
+    },
+  ];
 
   return (
     <View>
@@ -75,12 +102,12 @@ function NumberPickCarousel() {
       >
         {modes.map((mode, index) => (
           <NumberPickButton
-            key={mode}
+            key={index}
             onPress={() =>
               refCarousel.current?.scrollTo({ index: index, animated: true })
             }
           >
-            {mode}
+            {mode.name}
           </NumberPickButton>
         ))}
       </ScrollView>
@@ -89,18 +116,24 @@ function NumberPickCarousel() {
           ref={refCarousel}
           loop
           width={width * 0.9}
-          height={250}
+          height={400}
           data={modes}
           scrollAnimationDuration={1000}
           onSnapToItem={(index) => console.log("current index:", index)}
           renderItem={({ index, item }) => (
             <View
               key={index}
-              className="flex-1 justify-center rounded-3xl border-2 border-white"
+              className="flex-1 rounded-3xl border-2 border-white bg-black p-7"
             >
-              <Text className="text-semibold text-center text-3xl text-white">
-                {item}
+              <Text className="text-semibold text-2xl text-white">
+                {item.name}
               </Text>
+              <Text className="mt-1 text-white">{item.description}</Text>
+              <Image
+                source={item.cover}
+                style={{ width: 300, height: 200, borderRadius: 10 }}
+              ></Image>
+              <Button onPress={() => alert("todo")} title="번호뽑기"></Button>
             </View>
           )}
         />
