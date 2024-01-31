@@ -1,5 +1,13 @@
+import type { TextProps } from "react-native";
 import React from "react";
-import { Dimensions, Image, ScrollView, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
 export default function Index() {
@@ -43,19 +51,30 @@ export default function Index() {
           />
         </View>
       </View>
+      <NumberPickCarousel></NumberPickCarousel>
+      <View className="mt-8 h-1 bg-[#474747]"></View>
+      <View className="mt-8 px-4">
+        <Text className="text-white">실시간 우주 생성 번호</Text>
+      </View>
+    </ScrollView>
+  );
+}
 
+function NumberPickCarousel() {
+  const width = Dimensions.get("window").width;
+
+  return (
+    <View>
       <ScrollView
         className="max-h-10 bg-black"
         horizontal
         contentContainerStyle={{ gap: 10, alignItems: "center" }}
       >
-        <Text className="text-white">직접조합</Text>
-        <Text className="text-white">직접조합</Text>
-        <Text className="text-white">직접조합</Text>
-        <Text className="text-white">직접조합</Text>
-        <Text className="text-white">직접조합</Text>
-        <Text className="text-white">직접조합</Text>
-        <Text className="text-white">직접조합</Text>
+        <NumberPickButton>직접조합</NumberPickButton>
+        <NumberPickButton>랜덤뽑기</NumberPickButton>
+        <NumberPickButton>우주추천</NumberPickButton>
+        <NumberPickButton>미출현 번호</NumberPickButton>
+        <NumberPickButton>짝홀조합</NumberPickButton>
       </ScrollView>
       <View className="mt-5 items-center">
         <Carousel
@@ -74,10 +93,20 @@ export default function Index() {
           )}
         />
       </View>
-      <View className="mt-8 h-1 bg-[#474747]"></View>
-      <View className="mt-8 px-4">
-        <Text className="text-white">실시간 우주 생성 번호</Text>
-      </View>
-    </ScrollView>
+    </View>
+  );
+}
+
+function NumberPickButton(props: TextProps) {
+  const { className, children } = props;
+  return (
+    <Pressable onPress={() => alert(children)}>
+      <Text
+        className={`justify-center rounded-full bg-[#1B1C20] px-3 py-2 align-middle text-white ${className}`}
+        {...props}
+      >
+        {children}
+      </Text>
+    </Pressable>
   );
 }
