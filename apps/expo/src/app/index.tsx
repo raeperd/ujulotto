@@ -1,5 +1,6 @@
 import type { TextProps } from "react-native";
-import React from "react";
+import type { ICarouselInstance } from "react-native-reanimated-carousel";
+import React, { useRef } from "react";
 import {
   Dimensions,
   Image,
@@ -61,7 +62,9 @@ export default function Index() {
 }
 
 function NumberPickCarousel() {
+  const refCarousel = useRef<ICarouselInstance>(null);
   const width = Dimensions.get("window").width;
+  const modes = ["직접조합", "랜덤뽑기", "우주추천", "미출현 번호", "짝홀조합"];
 
   return (
     <View>
@@ -70,24 +73,33 @@ function NumberPickCarousel() {
         horizontal
         contentContainerStyle={{ gap: 10, alignItems: "center" }}
       >
-        <NumberPickButton>직접조합</NumberPickButton>
-        <NumberPickButton>랜덤뽑기</NumberPickButton>
-        <NumberPickButton>우주추천</NumberPickButton>
-        <NumberPickButton>미출현 번호</NumberPickButton>
-        <NumberPickButton>짝홀조합</NumberPickButton>
+        {modes.map((mode, index) => (
+          <NumberPickButton
+            key={mode}
+            onPress={() =>
+              refCarousel.current?.scrollTo({ index: index, animated: true })
+            }
+          >
+            {mode}
+          </NumberPickButton>
+        ))}
       </ScrollView>
       <View className="mt-5 items-center">
         <Carousel
+          ref={refCarousel}
           loop
           width={width * 0.9}
           height={250}
-          data={[...new Array(3).keys()]}
+          data={modes}
           scrollAnimationDuration={1000}
           onSnapToItem={(index) => console.log("current index:", index)}
-          renderItem={({ index }) => (
-            <View className="flex-1 justify-center rounded-3xl border-2 border-white">
+          renderItem={({ index, item }) => (
+            <View
+              key={index}
+              className="flex-1 justify-center rounded-3xl border-2 border-white"
+            >
               <Text className="text-semibold text-center text-3xl text-white">
-                {index}
+                {item}
               </Text>
             </View>
           )}
@@ -97,7 +109,7 @@ function NumberPickCarousel() {
   );
 }
 
-function NumberPickButton(props: TextProps) {
+function NumberPickButton(props: TextProps & { onPress: () => void }) {
   const { className, children } = props;
   return (
     <Pressable onPress={() => alert(children)}>
