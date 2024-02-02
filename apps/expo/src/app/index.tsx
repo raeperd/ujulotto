@@ -54,9 +54,7 @@ export default function Index() {
       </View>
       <NumberPickCarousel></NumberPickCarousel>
       <View className="mt-8 h-1 bg-[#474747]"></View>
-      <View className="mt-8 px-4">
-        <Text className="text-white">실시간 우주 생성 번호</Text>
-      </View>
+      <RealtimeNumberThread></RealtimeNumberThread>
     </ScrollView>
   );
 }
@@ -117,12 +115,12 @@ function NumberPickCarousel() {
           </NumberPickButton>
         ))}
       </ScrollView>
-      <View className="mt-5 items-center">
+      <View className="relative mt-5 items-center">
         <Carousel
           ref={refCarousel}
           loop
           width={width * 0.9}
-          height={390}
+          height={420}
           data={modes}
           scrollAnimationDuration={1000}
           onSnapToItem={(index) => setIndexMode(index)}
@@ -148,6 +146,18 @@ function NumberPickCarousel() {
             </View>
           )}
         />
+        <Pressable
+          className="absolute left-2 top-1/2 -translate-y-1/2 transform"
+          onPress={() => refCarousel.current?.prev()}
+        >
+          <Image source={require("./images/chevron-left.png")}></Image>
+        </Pressable>
+        <Pressable
+          className="absolute right-2 top-1/2 -translate-y-1/2 transform"
+          onPress={() => refCarousel.current?.next()}
+        >
+          <Image source={require("./images/chevron-right.png")}></Image>
+        </Pressable>
       </View>
     </View>
   );
@@ -170,5 +180,15 @@ function NumberPickButton(
         </Text>
       </View>
     </Pressable>
+  );
+}
+
+function RealtimeNumberThread() {
+  return (
+    <View className="mt-8 px-4">
+      <Text className="text-lg font-semibold text-white">
+        실시간 우주 생성 번호
+      </Text>
+    </View>
   );
 }
