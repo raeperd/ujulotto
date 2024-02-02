@@ -12,8 +12,6 @@ import {
 import Carousel from "react-native-reanimated-carousel";
 
 export default function Index() {
-  const width = Dimensions.get("window").width;
-
   return (
     <ScrollView className="flex-1 bg-[#1B1C20]">
       <View className="p-4">
@@ -33,29 +31,55 @@ export default function Index() {
           </Text>
           <Image source={require("./images/arrow.png")}></Image>
         </View>
-        <View className="mt-5 items-center">
-          <Carousel
-            loop
-            width={width * 0.9}
-            height={100}
-            autoPlay={true}
-            data={[...new Array(3).keys()]}
-            scrollAnimationDuration={1000}
-            onSnapToItem={(index) => console.log("current index:", index)}
-            renderItem={({ index }) => (
-              <View className="flex-1 justify-center rounded-3xl border-2 border-white">
-                <Text className="text-semibold text-center text-3xl text-white">
-                  {index}
-                </Text>
-              </View>
-            )}
-          />
-        </View>
+        <BannerCarousel className="mt-5 items-center"></BannerCarousel>
       </View>
       <NumberPickCarousel></NumberPickCarousel>
       <View className="mt-8 h-1 bg-[#474747]"></View>
       <RealtimeNumberThread></RealtimeNumberThread>
     </ScrollView>
+  );
+}
+
+function BannerCarousel(props: ViewProps) {
+  const width = Dimensions.get("window").width;
+  const banners = [
+    <View className="relative" key={0}>
+      <Image
+        source={require("./images/banner_1.png")}
+        className="h-full w-full rounded-3xl"
+      ></Image>
+      <Text className="absolute left-[20] top-[18] text-xl font-semibold text-white">
+        복권 판매점 쉽게 찾기
+      </Text>
+      <Text className="absolute left-[20] top-[44] text-base text-white">
+        전국 1등 판매점
+      </Text>
+    </View>,
+    <View
+      className="relative h-full w-full rounded-3xl bg-[#E2E3FF]"
+      key={1}
+    ></View>,
+    <View className="relative" key={2}>
+      <Image
+        source={require("./images/banner_3.png")}
+        className="h-full w-full rounded-3xl"
+      ></Image>
+    </View>,
+  ];
+
+  return (
+    <View {...props}>
+      <Carousel
+        loop
+        width={width * 0.9}
+        height={100}
+        autoPlay={true}
+        data={banners}
+        scrollAnimationDuration={1000}
+        onSnapToItem={(index) => console.log("current index:", index)}
+        renderItem={({ item: banner }) => banner}
+      />
+    </View>
   );
 }
 
