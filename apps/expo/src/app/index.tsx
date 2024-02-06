@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
+import NumberBall from "../components/NumberBall";
+
 export default function Index() {
   return (
     <ScrollView className="flex-1 bg-[#1B1C20]">
@@ -54,16 +56,31 @@ function BannerCarousel(props: ViewProps) {
       <Text className="absolute left-[20] top-[44] text-base text-white">
         전국 1등 판매점
       </Text>
+      <BannerPageNumber num={1}></BannerPageNumber>
     </View>,
     <View
-      className="relative h-full w-full rounded-3xl bg-[#E2E3FF]"
+      className="relative flex-1 gap-[10] rounded-3xl bg-[#E2E3FF] px-5 py-[13]"
       key={1}
-    ></View>,
-    <View className="relative" key={2}>
-      <Image
-        source={require("./images/banner_3.png")}
-        className="h-full w-full rounded-3xl"
-      ></Image>
+    >
+      <View className="flex-row items-center gap-2">
+        <View className="rounded-3xl bg-[#6E2BFC] px-3 py-1">
+          <Text className="rounded-3xl text-xl font-bold text-white">
+            1,089회
+          </Text>
+        </View>
+        <Text className="text-xl font-semibold">이번주 추첨 번호</Text>
+      </View>
+      <View className="flex-row gap-[6]">
+        <NumberBall number={1}></NumberBall>
+        <NumberBall number={11}></NumberBall>
+        <NumberBall number={22}></NumberBall>
+        <NumberBall number={33}></NumberBall>
+        <NumberBall number={44}></NumberBall>
+        <NumberBall number={33}></NumberBall>
+        <Text>+</Text>
+        <NumberBall number={44}></NumberBall>
+      </View>
+      <BannerPageNumber num={2}></BannerPageNumber>
     </View>,
   ];
 
@@ -73,12 +90,19 @@ function BannerCarousel(props: ViewProps) {
         loop
         width={width * 0.9}
         height={100}
-        autoPlay={true}
         data={banners}
         scrollAnimationDuration={1000}
         onSnapToItem={(index) => console.log("current index:", index)}
         renderItem={({ item: banner }) => banner}
       />
+    </View>
+  );
+}
+
+function BannerPageNumber({ num }: { num: number }) {
+  return (
+    <View className="absolute bottom-[10] right-[10] rounded-full bg-[#00000057] px-[10] py-[3]">
+      <Text className="text-xs text-white">{num}/2</Text>
     </View>
   );
 }
