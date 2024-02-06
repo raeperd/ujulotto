@@ -88,6 +88,7 @@ function BannerCarousel(props: ViewProps) {
     <View {...props}>
       <Carousel
         loop
+        autoPlay
         width={width * 0.9}
         height={100}
         data={banners}
