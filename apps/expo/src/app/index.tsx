@@ -125,13 +125,18 @@ function NumberPickCarousel() {
     },
     {
       name: "랜덤뽑기",
-      description: "당첨번호와 선호 번호 생성 데이터에 기반한 추천 방식이에요.",
+      description: "최대 6개 번호를 무작위로 랜덤 추첨합니다.",
       cover: require("./images/cover-random-pick.png"),
     },
     {
       name: "우주추천",
-      description: "한달 간 추첨되지 않은 번호 조합이에요.",
+      description: "당첨번호와 선호 번호 생성 데이터에 기반한 추천 방식이에요.",
       cover: require("./images/cover-universe-pick.png"),
+    },
+    {
+      name: "미출현 번호",
+      description: "한달 간 추첨되지 않은 번호 조합이에요.",
+      cover: require("./images/cover-missing-pick.png"),
     },
     {
       name: "짝홀조합",
@@ -139,9 +144,9 @@ function NumberPickCarousel() {
       cover: require("./images/cover-odd-even-pick.png"),
     },
     {
-      name: "미출현 번호",
-      description: "2개 회차의 1등 번호 조합이에요.",
-      cover: require("./images/cover-missing-pick.png"),
+      name: "1등 번호기반",
+      description: "1등 번호를 기반으로 추첨해드려요.",
+      cover: require("./images/cover-first-pick.png"),
     },
   ];
 
