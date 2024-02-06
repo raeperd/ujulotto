@@ -21,11 +21,19 @@ export default function RootLayout() {
         screenOptions={{
           tabBarStyle: {
             position: "absolute",
+            height: 70,
+            paddingTop: 16,
+            paddingBottom: 20,
             borderTopWidth: 0,
             backgroundColor: "#000000",
             opacity: 0.6,
             borderTopStartRadius: 10,
             borderTopEndRadius: 10,
+          },
+          tabBarLabelStyle: {
+            fontSize: 10,
+            fontWeight: "500",
+            textAlign: "center",
           },
           tabBarActiveTintColor: "#FFFFFF",
         }}
