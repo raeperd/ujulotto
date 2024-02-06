@@ -1,4 +1,5 @@
-import { Stack } from "expo-router";
+import React from "react";
+import { Tabs } from "expo-router/tabs";
 import { StatusBar } from "expo-status-bar";
 
 import { TRPCProvider } from "~/utils/api";
@@ -12,16 +13,42 @@ export default function RootLayout() {
     <TRPCProvider>
       {/*
           The Stack component displays the current page.
+          i
           It also allows you to configure your screens 
         */}
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#f472b6",
-          },
-        }}
-      />
       <StatusBar />
+      <Tabs
+        screenOptions={{
+          tabBarStyle: {
+            position: "absolute",
+            borderTopWidth: 0,
+            backgroundColor: "#000000",
+            opacity: 0.6,
+            borderTopStartRadius: 10,
+            borderTopEndRadius: 10,
+          },
+          tabBarActiveTintColor: "#FFFFFF",
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            tabBarLabel: "홈",
+          }}
+        />
+        <Tabs.Screen
+          name="numbers"
+          options={{
+            tabBarLabel: "번호저장함",
+          }}
+        />
+        <Tabs.Screen
+          name="locations"
+          options={{
+            tabBarLabel: "판매점찾기",
+          }}
+        />
+      </Tabs>
     </TRPCProvider>
   );
 }
