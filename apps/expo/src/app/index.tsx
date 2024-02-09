@@ -93,7 +93,6 @@ function BannerCarousel(props: ViewProps) {
         height={100}
         data={banners}
         scrollAnimationDuration={1000}
-        onSnapToItem={(index) => console.log("current index:", index)}
         renderItem={({ item: banner }) => banner}
       />
     </View>
