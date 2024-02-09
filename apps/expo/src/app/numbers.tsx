@@ -65,7 +65,7 @@ const NumberHistoryItem = ({ history, ...props }: NumberHistoryProps) => {
   return (
     <View {...props}>
       <View className="flex-row justify-between">
-        <Text className="text-white">{history.createdAt.toISOString()}</Text>
+        <Text className="text-white">{formatCreatedAt(history)}</Text>
         <Text className="text-white">{history.type}</Text>
       </View>
       <FlatList
@@ -79,7 +79,7 @@ const NumberHistoryItem = ({ history, ...props }: NumberHistoryProps) => {
         )}
         keyExtractor={(_, index) => index.toString()}
       ></FlatList>
-      <View className="mt-[10] flex-auto flex-row">
+      <View className="mt-[10] flex-row">
         <Pressable className="w-1/2 rounded-3xl bg-[#6E2BFC] py-[10]">
           <Text className="text-center text-white">저장</Text>
         </Pressable>
@@ -93,4 +93,22 @@ const NumberHistoryItem = ({ history, ...props }: NumberHistoryProps) => {
 
 interface NumberHistoryProps extends ViewProps {
   history: NumberHistory;
+}
+
+function formatCreatedAt(history: NumberHistory) {
+  const date = history.createdAt;
+  const [month, day, hour, minute, second] = [
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+  ];
+  const zeroPad = (num: number, places: number) =>
+    String(num).padStart(places, "0");
+
+  return `${zeroPad(month, 2)}.${zeroPad(day, 2)} ${zeroPad(hour, 2)}:${zeroPad(
+    minute,
+    2,
+  )}:${zeroPad(second, 2)}`;
 }
