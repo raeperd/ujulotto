@@ -1,18 +1,53 @@
+import type { ViewProps } from "react-native";
 import type { SvgProps } from "react-native-svg";
 import * as React from "react";
-import { Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
+import NumberBall from "../components/NumberBall";
+
 export default function Numbers() {
-  const numbers = [];
+  const history: NumberHistory[] = [
+    {
+      numbers: [9, 18, 20, 22, 34, 38],
+      createdAt: new Date(),
+      type: "직접조합",
+    },
+    {
+      numbers: [9, 18, 20, 22, 34, 38],
+      createdAt: new Date(),
+      type: "직접조합",
+    },
+    {
+      numbers: [
+        9, 18, 20, 22, 34, 38, 9, 18, 20, 22, 34, 38, 9, 18, 20, 22, 34, 38, 9,
+        18, 20, 22, 34, 38, 9, 18, 20, 22, 34, 38, 9, 18, 20, 22, 34, 38,
+      ],
+      createdAt: new Date(),
+      type: "미출현번호",
+    },
+  ];
   return (
     <View className="flex-1 bg-[#1B1C20] px-4 pt-[30]">
       <View className="flex-row justify-between">
         <Text className="text-2xl font-semibold text-white">번호저장함</Text>
         <DotSvg fill={"#1B1C20"}></DotSvg>
       </View>
+      <FlatList
+        data={history}
+        renderItem={({ item }) => (
+          <NumberHistoryItem history={item} className="mt-[30]" />
+        )}
+        keyExtractor={(_, index) => index.toString()}
+      />
     </View>
   );
+}
+
+interface NumberHistory {
+  numbers: number[];
+  createdAt: Date;
+  type: string;
 }
 
 const DotSvg = (props: SvgProps) => (
@@ -25,3 +60,37 @@ const DotSvg = (props: SvgProps) => (
     />
   </Svg>
 );
+
+const NumberHistoryItem = ({ history, ...props }: NumberHistoryProps) => {
+  return (
+    <View {...props}>
+      <View className="flex-row justify-between">
+        <Text className="text-white">{history.createdAt.toISOString()}</Text>
+        <Text className="text-white">{history.type}</Text>
+      </View>
+      <FlatList
+        className="mt-2 flex-row flex-wrap justify-center gap-[10] rounded-[14] bg-white py-5"
+        data={history.numbers}
+        numColumns={6}
+        renderItem={(num) => (
+          <View className="m-[5]">
+            <NumberBall number={num.item} width={32}></NumberBall>
+          </View>
+        )}
+        keyExtractor={(_, index) => index.toString()}
+      ></FlatList>
+      <View className="mt-[10] flex-auto flex-row">
+        <Pressable className="w-1/2 rounded-3xl bg-[#6E2BFC] py-[10]">
+          <Text className="text-center text-white">저장</Text>
+        </Pressable>
+        <Pressable className="w-1/2 rounded-3xl bg-[#242429] py-[10]">
+          <Text className="text-center text-white">삭제</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+};
+
+interface NumberHistoryProps extends ViewProps {
+  history: NumberHistory;
+}

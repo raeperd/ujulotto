@@ -19,19 +19,23 @@ export default function NumberBall(props: NumberBallProps) {
     }
     return ["#3CE038", "#9BFA98"];
   };
-  const { number, ...rest } = props;
+  const { number, width, ...rest } = props;
+  const size = width ?? 24;
   return (
     <LinearGradient
       colors={colorsFromNumber(number)}
       locations={[0.1655, 0.7122]}
       style={{
-        width: 24,
-        height: 24,
+        width: size,
+        height: size,
         padding: 4,
-        borderRadius: 12,
+        borderRadius: size / 2,
       }}
     >
-      <Text className="text-center text-xs font-semibold text-black">
+      <Text
+        className="text-center text-xs font-semibold text-black"
+        style={{ fontSize: size / 2, lineHeight: size - 8 }}
+      >
         {number}
       </Text>
     </LinearGradient>
@@ -40,4 +44,5 @@ export default function NumberBall(props: NumberBallProps) {
 
 interface NumberBallProps extends ViewProps {
   number: number;
+  width?: number;
 }
