@@ -16,9 +16,9 @@ import NumberBall from "../components/NumberBall";
 
 export default function Index() {
   return (
-    <ScrollView className="flex-1 bg-[#1B1C20]">
+    <ScrollView className="bg-black_2 flex-1">
       <View className="p-4">
-        <View className="h-10 flex-row items-center justify-between rounded-3xl bg-[#6E2BFC] px-4">
+        <View className="bg-point h-10 flex-row items-center justify-between rounded-3xl px-4">
           <View className="flex-row items-center gap-1">
             <Image source={require("./images/clock.png")}></Image>
             <Text className="text-white">3일 21:05:22</Text>
@@ -37,7 +37,7 @@ export default function Index() {
         <BannerCarousel className="mt-5 items-center"></BannerCarousel>
       </View>
       <NumberPickCarousel></NumberPickCarousel>
-      <View className="mt-8 h-1 bg-[#474747]"></View>
+      <View className="bg-gray_5 mt-8 h-1"></View>
       <RealtimeNumberThread></RealtimeNumberThread>
     </ScrollView>
   );
@@ -64,7 +64,7 @@ function BannerCarousel(props: ViewProps) {
       key={1}
     >
       <View className="flex-row items-center gap-2">
-        <View className="rounded-3xl bg-[#6E2BFC] px-3 py-1">
+        <View className="bg-point rounded-3xl px-3 py-1">
           <Text className="rounded-3xl text-xl font-bold text-white">
             1,089회
           </Text>
@@ -231,7 +231,7 @@ function NumberPickButton(
     <Pressable onPress={onPress}>
       <View
         className={`justify-center rounded-full border-2 px-3 py-1 align-middle ${
-          active ? "bg-[#6E2BFC]" : "bg-[#1B1C20]"
+          active ? "bg-point" : "bg-black_2"
         } ${index == 0 ? "border-dashed border-white" : "border-[#1B1C20]"}`}
         {...props}
       >

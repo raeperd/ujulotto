@@ -28,7 +28,7 @@ export default function Numbers() {
     },
   ];
   return (
-    <View className="flex-1 bg-[#1B1C20] px-4 pt-[30]">
+    <View className="bg-black_2 flex-1 px-4 pt-[30]">
       <View className="flex-row justify-between">
         <Text className="text-2xl font-semibold text-white">번호저장함</Text>
         <DotSvg fill={"#1B1C20"}></DotSvg>
@@ -80,7 +80,7 @@ const NumberHistoryItem = ({ history, ...props }: NumberHistoryProps) => {
         keyExtractor={(_, index) => index.toString()}
       ></FlatList>
       <View className="mt-[10] flex-row">
-        <Pressable className="w-1/2 rounded-3xl bg-[#6E2BFC] py-[10]">
+        <Pressable className="bg-point w-1/2 rounded-3xl py-[10]">
           <Text className="text-center text-white">저장</Text>
         </Pressable>
         <Pressable className="w-1/2 rounded-3xl bg-[#242429] py-[10]">
