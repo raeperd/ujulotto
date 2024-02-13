@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import { Link } from "expo-router";
 
 import NumberBall from "../components/NumberBall";
 
@@ -190,9 +191,15 @@ function NumberPickCarousel() {
                     style={{ width: 300, height: 200, borderRadius: 10 }}
                   ></Image>
                   <Pressable className="mt-5 w-full rounded-xl bg-white">
-                    <Text className="py-4 text-center font-bold text-black">
+                    <Link
+                      href={{
+                        pathname: "/generates/[mode]",
+                        params: { mode: item.name },
+                      }}
+                      className="py-4 text-center font-bold text-black"
+                    >
                       번호 뽑기
-                    </Text>
+                    </Link>
                   </Pressable>
                 </View>
               ) : null}

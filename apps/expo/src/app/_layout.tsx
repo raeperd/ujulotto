@@ -56,6 +56,12 @@ export default function RootLayout() {
             tabBarLabel: "판매점찾기",
           }}
         />
+        <Tabs.Screen
+          name="generates/[mode]"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </TRPCProvider>
   );
