@@ -62,6 +62,12 @@ export default function RootLayout() {
             href: null,
           }}
         />
+        <Tabs.Screen
+          name="selfPick"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </TRPCProvider>
   );

@@ -202,7 +202,14 @@ function NumberPickCarousel() {
                     </Link>
                   </Pressable>
                 </View>
-              ) : null}
+              ) : (
+                <Link
+                  href={{ pathname: "/selfPick" }}
+                  className="text-center text-5xl font-extrabold text-red-400"
+                >
+                  직접조합
+                </Link>
+              )}
             </View>
           )}
         />
