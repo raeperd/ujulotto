@@ -4,6 +4,7 @@ import { Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function NumberBall(props: NumberBallProps) {
+  const { number, width } = props;
   const colorsFromNumber = (num: number) => {
     if (num < 11) {
       return ["#FFCD12", "#FFF2AB"];
@@ -19,7 +20,6 @@ export default function NumberBall(props: NumberBallProps) {
     }
     return ["#3CE038", "#9BFA98"];
   };
-  const { number, width, ...rest } = props;
   const size = width ?? 24;
   return (
     <LinearGradient
@@ -42,7 +42,7 @@ export default function NumberBall(props: NumberBallProps) {
   );
 }
 
-interface NumberBallProps extends ViewProps {
+export interface NumberBallProps extends ViewProps {
   number: number;
   width?: number;
 }
