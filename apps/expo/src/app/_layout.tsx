@@ -1,6 +1,5 @@
 import React from "react";
 import { Tabs } from "expo-router/tabs";
-import { StatusBar } from "expo-status-bar";
 
 import { TRPCProvider } from "~/utils/api";
 
@@ -16,9 +15,9 @@ export default function RootLayout() {
           i
           It also allows you to configure your screens 
         */}
-      <StatusBar />
       <Tabs
         screenOptions={{
+          headerShown: false,
           tabBarStyle: {
             position: "absolute",
             height: 70,
