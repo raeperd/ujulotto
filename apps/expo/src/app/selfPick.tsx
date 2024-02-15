@@ -1,9 +1,152 @@
-import { Text, View } from "react-native";
+import type { PressableProps, ViewProps } from "react-native";
+import type { SvgProps } from "react-native-svg";
+import { useState } from "react";
+import { FlatList, Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Svg, { Path, Rect } from "react-native-svg";
+
+import type { NumberBallProps } from "../components/NumberBall";
+import NumberBall from "../components/NumberBall";
+import RouteBackButton from "../components/RouteBackButton";
 
 export default function SelfPick() {
   return (
-    <View className="bg-black_2 flex-1 px-4 pt-[30]">
-      <Text className="text-white">self pick to add</Text>
+    <SafeAreaView className="bg-point flex-1 px-[10]">
+      <View className="flex-row items-center">
+        <RouteBackButton></RouteBackButton>
+        <Text className="font-medium text-white">직접조합</Text>
+      </View>
+      <SelfPickBoard className="w-full"></SelfPickBoard>
+    </SafeAreaView>
+  );
+}
+
+function SelfPickBoard(props: ViewProps) {
+  const [index, setIndex] = useState(0);
+  const [numbers, setNumbers] = useState<number[][]>(
+    Array.from({ length: 5 }, () => Array.from({ length: 6 }, () => 0)),
+  );
+  const rowLabels = ["A", "B", "C", "D", "E"];
+  return (
+    <View {...props}>
+      <View className="items-center rounded-[14] bg-white pb-2 pl-5 pr-[18] pt-4">
+        <FlatList
+          data={Array.from({ length: 5 }, (_, i) => i)}
+          renderItem={(row) => (
+            <View className="mb-[10] flex-row items-center gap-2">
+              <Pressable
+                onPress={() => setIndex(row.item)}
+                className={`mx-2.5 h-6 `}
+              >
+                <Text
+                  className={`font-bold ${
+                    row.item == index ? "text-point" : "text-gray_4"
+                  }`}
+                >
+                  {rowLabels[row.item]}
+                </Text>
+              </Pressable>
+              {numbers[row.item]?.map((num, i) => (
+                <NumberBallOrEmpty
+                  key={i}
+                  number={num}
+                  width={34}
+                ></NumberBallOrEmpty>
+              ))}
+              <RefreshButton active={row.item == index}></RefreshButton>
+            </View>
+          )}
+          keyExtractor={(_, index) => index.toString()}
+        ></FlatList>
+      </View>
+      <View className="mt-2.5 items-center rounded-[14] bg-black px-[21] py-5">
+        <FlatList
+          className="flex-row flex-wrap"
+          data={Array.from({ length: 45 }, (_, i) => i + 1)}
+          numColumns={7}
+          renderItem={(num) => (
+            <View className="m-1">
+              <NumberPickButton
+                active={false}
+                number={num.item}
+              ></NumberPickButton>
+            </View>
+          )}
+          keyExtractor={(_, index) => index.toString()}
+        ></FlatList>
+      </View>
     </View>
   );
+}
+
+function NumberBallOrEmpty(props: NumberBallProps) {
+  const { number, width } = props;
+  const size = width ?? 32;
+  if (number === 0) {
+    return (
+      <Svg width={size} height={size} fill="none" {...props}>
+        <Rect
+          width={31}
+          height={31}
+          x={0.5}
+          y={0.5}
+          fill="#D6D6D7"
+          stroke="#fff"
+          strokeDasharray="1.85 1.85"
+          strokeLinejoin="round"
+          rx={15.5}
+        />
+      </Svg>
+    );
+  }
+  return <NumberBall number={number} width={width}></NumberBall>;
+}
+
+function RefreshButton(props: RefreshButtonProps) {
+  return (
+    <Svg width={16} height={16} fill="none" {...props}>
+      <Path
+        fill={props.active ? "#474747" : "#D6D6D7"}
+        fillRule="evenodd"
+        d="M7.97 0C12.405 0 16 3.582 16 8s-3.595 8-8.03 8a8.03 8.03 0 0 1-7.532-5.22.94.94 0 0 1 .558-1.21.946.946 0 0 1 1.214.555 6.142 6.142 0 0 0 5.76 3.993c3.391 0 6.14-2.74 6.14-6.118 0-3.379-2.749-6.118-6.14-6.118A6.136 6.136 0 0 0 3.12 4.25h2.077l.073.003c.488.037.871.443.871.938a.943.943 0 0 1-.877.94l-.067.001H2.662l-.11-.002a2.657 2.657 0 0 1-2.55-2.553L0 3.479V.955L.003.882A.943.943 0 0 1 .945.014c.499 0 .907.386.942.874l.002.067v1.82A8.027 8.027 0 0 1 7.97 0Z"
+        clipRule="evenodd"
+      />
+    </Svg>
+  );
+}
+
+interface RefreshButtonProps extends SvgProps {
+  active: boolean;
+}
+
+function NumberPickButton(props: NumberPickButtonProps) {
+  const { active, number, ...rest } = props;
+  const size = 34;
+  return (
+    <Pressable {...rest}>
+      <View
+        className={`${active ? "bg-white" : "bg-black_2"} `}
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          padding: 4,
+        }}
+      >
+        <Text
+          className={`${
+            active ? "text-black" : "text-white"
+          } text-center text-xs`}
+          style={{ fontSize: 17, lineHeight: 34 - 8 }}
+        >
+          {number}
+        </Text>
+      </View>
+    </Pressable>
+  );
+}
+
+interface NumberPickButtonProps extends Omit<PressableProps, "className"> {
+  active: boolean;
+  number: number;
 }
