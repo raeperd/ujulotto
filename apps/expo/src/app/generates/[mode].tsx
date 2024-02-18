@@ -1,6 +1,13 @@
 import type { PressableProps } from "react-native";
 import React, { useEffect, useState } from "react";
-import { FlatList, ImageBackground, Pressable, Text, View } from "react-native";
+import {
+  FlatList,
+  ImageBackground,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
 
@@ -11,6 +18,7 @@ import RouteBackButton from "../../components/RouteBackButton";
 export default function GeneratedNumber() {
   const { mode } = useLocalSearchParams<{ mode: GenerationMode }>();
   const [numbers, setNumbers] = useState<number[]>([]);
+  const { height } = useWindowDimensions();
 
   useEffect(() => {
     setNumbers(generateNumbersForTimes(mode, 5));
@@ -22,7 +30,8 @@ export default function GeneratedNumber() {
       <View className="items-center">
         <ImageBackground
           source={require("../images/cover-generated.png")}
-          className="h-[413] w-[328] items-center"
+          className={`w-full items-center`}
+          style={{ height: (height / 100) * 55 }}
         >
           <Text className="pt-10 text-center text-3xl font-semibold text-white">
             {mode}
