@@ -13,6 +13,7 @@ import Carousel from "react-native-reanimated-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 
+import IconUniverse from "../components/IconUniverse";
 import NumberBall from "../components/NumberBall";
 
 export default function Index() {
@@ -183,9 +184,12 @@ function NumberPickCarousel() {
           onSnapToItem={(index) => setIndexMode(index)}
           renderItem={({ index, item }) => (
             <View key={index} className="flex-1 rounded-2xl bg-black p-7">
-              <Text className="text-semibold text-2xl text-white">
-                {item.name}
-              </Text>
+              <View className="flex-row items-center gap-1">
+                <Text className="text-semibold text-2xl text-white">
+                  {item.name}
+                </Text>
+                {item.name === "우주추천" && <IconUniverse></IconUniverse>}
+              </View>
               <Text className="mt-1 h-12 text-white">{item.description}</Text>
               {index != 0 ? (
                 <View className="flex-1 items-center">
