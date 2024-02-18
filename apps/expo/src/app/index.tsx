@@ -117,8 +117,8 @@ function NumberPickCarousel() {
   const refCarousel = useRef<ICarouselInstance>(null);
 
   const updateIndex = (index: number) => {
-    refCarousel.current?.scrollTo({ index: index, animated: true });
     setIndexMode(index);
+    refCarousel.current?.next({ count: index - indexMode });
   };
 
   const width = Dimensions.get("window").width;
