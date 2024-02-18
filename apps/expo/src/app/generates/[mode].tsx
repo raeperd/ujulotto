@@ -8,6 +8,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
 
@@ -19,6 +20,7 @@ export default function GeneratedNumber() {
   const { mode } = useLocalSearchParams<{ mode: GenerationMode }>();
   const [numbers, setNumbers] = useState<number[]>([]);
   const { height } = useWindowDimensions();
+  const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     setNumbers(generateNumbersForTimes(mode, 5));
@@ -42,18 +44,25 @@ export default function GeneratedNumber() {
           <FlatList
             className="mt-10 flex-row flex-wrap"
             data={numbers}
+            extraData={numbers}
             numColumns={6}
+            keyExtractor={(_, index) => (index + retry).toString()}
             renderItem={(num) => (
-              <View className="mx-1 my-2">
+              <Animated.View
+                className="mx-1 my-2"
+                entering={FadeIn.duration(num.index * 100)}
+              >
                 <NumberBall number={num.item} width={32}></NumberBall>
-              </View>
+              </Animated.View>
             )}
-            keyExtractor={(_, index) => index.toString()}
           ></FlatList>
         </ImageBackground>
         <BottomButton
           className="bg-gray_5 mt-[10] py-[14]"
-          onPress={() => setNumbers(generateNumbersForTimes(mode, 5))}
+          onPress={() => {
+            setRetry((prev) => prev + 1);
+            setNumbers(generateNumbersForTimes(mode, 5));
+          }}
         >
           다시뽑기
         </BottomButton>
