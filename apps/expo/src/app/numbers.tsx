@@ -2,6 +2,7 @@ import type { ViewProps } from "react-native";
 import type { SvgProps } from "react-native-svg";
 import * as React from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Path } from "react-native-svg";
 
 import NumberBall from "../components/NumberBall";
@@ -28,7 +29,7 @@ export default function Numbers() {
     },
   ];
   return (
-    <View className="bg-black_2 flex-1 px-4 pt-[30]">
+    <SafeAreaView className="bg-black_2 flex-1 px-4">
       <View className="flex-row justify-between">
         <Text className="text-2xl font-semibold text-white">번호저장함</Text>
         <DotSvg fill={"#1B1C20"}></DotSvg>
@@ -40,7 +41,7 @@ export default function Numbers() {
         )}
         keyExtractor={(_, index) => index.toString()}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -10,36 +10,39 @@ import {
   View,
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 
 import NumberBall from "../components/NumberBall";
 
 export default function Index() {
   return (
-    <ScrollView className="bg-black_2 flex-1">
-      <View className="p-4">
-        <View className="bg-point h-10 flex-row items-center justify-between rounded-3xl px-4">
-          <View className="flex-row items-center gap-1">
-            <Image source={require("./images/clock.png")}></Image>
-            <Text className="text-white">3일 21:05:22</Text>
+    <SafeAreaView className="bg-black_2 flex-1">
+      <ScrollView>
+        <View className="p-4">
+          <View className="bg-point h-10 flex-row items-center justify-between rounded-3xl px-4">
+            <View className="flex-row items-center gap-1">
+              <Image source={require("./images/clock.png")}></Image>
+              <Text className="text-white">3일 21:05:22</Text>
+            </View>
+            <View className="flex-row items-center gap-2">
+              <Image source={require("./images/bell.png")}></Image>
+              <Image source={require("./images/bell-arrow.png")}></Image>
+            </View>
           </View>
-          <View className="flex-row items-center gap-2">
-            <Image source={require("./images/bell.png")}></Image>
-            <Image source={require("./images/bell-arrow.png")}></Image>
+          <View className="mt-6 flex-row items-center gap-2">
+            <Text className="text-xl font-semibold text-white">
+              로그인 해주세요
+            </Text>
+            <Image source={require("./images/arrow.png")}></Image>
           </View>
+          <BannerCarousel className="mt-5 items-center"></BannerCarousel>
         </View>
-        <View className="mt-6 flex-row items-center gap-2">
-          <Text className="text-xl font-semibold text-white">
-            로그인 해주세요
-          </Text>
-          <Image source={require("./images/arrow.png")}></Image>
-        </View>
-        <BannerCarousel className="mt-5 items-center"></BannerCarousel>
-      </View>
-      <NumberPickCarousel></NumberPickCarousel>
-      <View className="bg-gray_5 mt-8 h-1"></View>
-      <RealtimeNumberThread></RealtimeNumberThread>
-    </ScrollView>
+        <NumberPickCarousel></NumberPickCarousel>
+        <View className="bg-gray_5 mt-8 h-1"></View>
+        <RealtimeNumberThread></RealtimeNumberThread>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

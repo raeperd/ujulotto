@@ -1,13 +1,7 @@
 import type { PressableProps } from "react-native";
 import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  ImageBackground,
-  Pressable,
-  SafeAreaView,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, ImageBackground, Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
 
 import type { GenerationMode } from "../../types/type";
@@ -23,10 +17,7 @@ export default function GeneratedNumber() {
   }, [mode]);
 
   return (
-    <SafeAreaView
-      className="bg-black_2 flex-1"
-      style={{ paddingHorizontal: 16 }}
-    >
+    <SafeAreaView className="bg-black_2 flex-1 px-4">
       <RouteBackButton></RouteBackButton>
       <View className="items-center">
         <ImageBackground
