@@ -26,6 +26,13 @@ export default function GeneratedNumber() {
     setNumbers(generateNumbersForTimes(mode, 5));
   }, [mode]);
 
+  const formatNow = () => {
+    const date = new Date();
+    return `${date.getFullYear()}년 ${
+      date.getMonth() + 1
+    }월 ${date.getDate()}일 생성`;
+  };
+
   return (
     <SafeAreaView className="bg-black_2 flex-1 px-4">
       <RouteBackButton></RouteBackButton>
@@ -39,7 +46,7 @@ export default function GeneratedNumber() {
             {mode}
           </Text>
           <Text className="pt-4 text-center text-sm font-medium text-white">
-            23년 9월 23일 생성
+            {formatNow()}
           </Text>
           <FlatList
             className="mt-10 flex-row flex-wrap"
