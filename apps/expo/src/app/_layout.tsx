@@ -16,9 +16,10 @@ export default function RootLayout() {
           It also allows you to configure your screens 
         */}
       <Tabs
-        screenOptions={{
+        screenOptions={({ route }) => ({
           headerShown: false,
           tabBarStyle: {
+            display: route.name === "selfPick" ? "none" : "flex",
             position: "absolute",
             height: 70,
             paddingTop: 16,
@@ -35,7 +36,7 @@ export default function RootLayout() {
             textAlign: "center",
           },
           tabBarActiveTintColor: "#FFFFFF",
-        }}
+        })}
       >
         <Tabs.Screen
           name="index"
