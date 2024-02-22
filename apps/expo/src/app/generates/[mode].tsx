@@ -14,22 +14,29 @@ import {
 import Animated, { FadeIn } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { ClipPath, Defs, G, Path } from "react-native-svg";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 import type { GenerationMode } from "../../types/type";
 import NumberBall from "../../components/NumberBall";
 import RouteBackButton from "../../components/RouteBackButton";
 
 export default function GeneratedNumber() {
-  const { mode } = useLocalSearchParams<{ mode: GenerationMode }>();
+  const { mode, nums } = useLocalSearchParams<{
+    mode: GenerationMode;
+    nums: string;
+  }>();
   const [numbers, setNumbers] = useState<number[]>([]);
   const { height } = useWindowDimensions();
   const [retry, setRetry] = useState(0);
   const [openSaveModal, setOpenSaveModal] = useState(false);
 
   useEffect(() => {
+    if (0 < nums.length) {
+      setNumbers(nums.split(",").map((v) => parseInt(v)));
+      return;
+    }
     setNumbers(generateNumbersForTimes(mode, 5));
-  }, [mode]);
+  }, [mode, nums]);
 
   const formatNow = () => {
     const date = new Date();
@@ -72,6 +79,10 @@ export default function GeneratedNumber() {
         <BottomButton
           className="bg-gray_5 mt-[10] py-[14]"
           onPress={() => {
+            if (mode == "직접조합") {
+              router.push("/selfPick");
+              return;
+            }
             setRetry((prev) => prev + 1);
             setNumbers(generateNumbersForTimes(mode, 5));
           }}

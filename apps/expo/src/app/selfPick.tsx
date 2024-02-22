@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Path, Rect } from "react-native-svg";
+import { Link } from "expo-router";
 
 import type { NumberBallProps } from "../components/NumberBall";
 import NumberBall from "../components/NumberBall";
@@ -127,14 +128,25 @@ function SelfPickBoard(props: ViewProps) {
           >
             <Text className="text-sm text-white">자동</Text>
           </Pressable>
-          <Pressable
-            className={`${
-              isFull ? "bg-point" : "bg-[#474747] opacity-40"
-            } flex-row items-center gap-[11] rounded-[4] px-[15] py-[6]`}
+          <Link
+            href={{
+              pathname: "/generates/[mode]",
+              params: {
+                mode: "직접조합",
+                nums: sortedNumbers.flatMap((row) => row.toString()),
+              },
+            }}
+            asChild
           >
-            <Text className="text-sm text-white">완성</Text>
-            <SvgNext></SvgNext>
-          </Pressable>
+            <Pressable
+              className={`${
+                isFull ? "bg-point" : "bg-[#474747] opacity-40"
+              } flex-row items-center gap-[11] rounded-[4] px-[15] py-[6]`}
+            >
+              <Text className="text-sm text-white">완성</Text>
+              <SvgNext></SvgNext>
+            </Pressable>
+          </Link>
         </View>
       </View>
     </View>
