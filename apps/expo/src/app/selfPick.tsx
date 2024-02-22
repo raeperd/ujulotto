@@ -115,6 +115,9 @@ function SelfPickBoard(props: ViewProps) {
             onPress={() => {
               setNumbers((prev) => {
                 const next = [...prev];
+                if (next[index]?.length == 12) {
+                  next[index] = next[index]?.filter((n) => 45 < n) ?? [];
+                }
                 while ((next[index]?.length ?? 0) < 12) {
                   const num = Math.floor(Math.random() * 45) + 1;
                   if (!next[index]?.includes(num)) {
