@@ -24,9 +24,14 @@ export default function SelfPick() {
 function SelfPickBoard(props: ViewProps) {
   const [index, setIndex] = useState(0);
   const [numbers, setNumbers] = useState<number[][]>(
-    Array.from({ length: 5 }, () => Array.from({ length: 6 }, () => 0)),
+    Array.from({ length: 5 }, () => Array.from({ length: 6 }, () => 46)),
+  );
+
+  const sortedNumbers = numbers.map((row) =>
+    [...row].sort((left, right) => left - right).slice(0, 6),
   );
   const rowLabels = ["A", "B", "C", "D", "E"];
+
   return (
     <View {...props}>
       <View className="items-center rounded-[14] bg-white pb-2 pl-5 pr-[18] pt-4">
@@ -46,7 +51,7 @@ function SelfPickBoard(props: ViewProps) {
                   {rowLabels[row.item]}
                 </Text>
               </Pressable>
-              {numbers[row.item]?.map((num, i) => (
+              {sortedNumbers[row.item]?.map((num, i) => (
                 <NumberBallOrEmpty
                   key={i}
                   number={num}
@@ -67,8 +72,20 @@ function SelfPickBoard(props: ViewProps) {
           renderItem={(num) => (
             <View className="m-1">
               <NumberPickButton
-                active={false}
+                active={numbers[index]?.includes(num.item) ?? false}
                 number={num.item}
+                onPress={() => {
+                  setNumbers((prev) => {
+                    const next = [...prev];
+                    if (numbers[index]?.includes(num.item)) {
+                      next[index] =
+                        next[index]?.filter((n) => n !== num.item) ?? [];
+                    } else {
+                      next[index] = [...(next[index] ?? []), num.item];
+                    }
+                    return next;
+                  });
+                }}
               ></NumberPickButton>
             </View>
           )}
@@ -82,7 +99,7 @@ function SelfPickBoard(props: ViewProps) {
 function NumberBallOrEmpty(props: NumberBallProps) {
   const { number, width } = props;
   const size = width ?? 32;
-  if (number === 0) {
+  if (number < 1 || 45 < number) {
     return (
       <Svg width={size} height={size} fill="none" {...props}>
         <Rect
