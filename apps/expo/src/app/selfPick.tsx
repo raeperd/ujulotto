@@ -78,32 +78,31 @@ function SelfPickBoard(props: ViewProps) {
           data={Array.from({ length: 45 }, (_, i) => i + 1)}
           numColumns={7}
           renderItem={(num) => (
-            <View className="m-1">
-              <NumberPickButton
-                active={numbers[index]?.includes(num.item) ?? false}
-                number={num.item}
-                onPress={() => {
-                  const included = numbers[index]?.includes(num.item);
-                  setNumbers((prev) => {
-                    const next = [...prev];
-                    if (included) {
-                      next[index] =
-                        next[index]?.filter((n) => n !== num.item) ?? [];
-                    } else {
-                      next[index] = [...(next[index] ?? []), num.item];
-                    }
-                    return next;
-                  });
-                  if (!included && numbers[index]?.length == 11) {
-                    setIndex((prev) => (prev + 1) % 5);
+            <NumberPickButton
+              className="m-1.5"
+              active={numbers[index]?.includes(num.item) ?? false}
+              number={num.item}
+              onPress={() => {
+                const included = numbers[index]?.includes(num.item);
+                setNumbers((prev) => {
+                  const next = [...prev];
+                  if (included) {
+                    next[index] =
+                      next[index]?.filter((n) => n !== num.item) ?? [];
+                  } else {
+                    next[index] = [...(next[index] ?? []), num.item];
                   }
-                }}
-                disabled={
-                  numbers[index]?.length == 12 &&
-                  !numbers[index]?.includes(num.item)
+                  return next;
+                });
+                if (!included && numbers[index]?.length == 11) {
+                  setIndex((prev) => (prev + 1) % 5);
                 }
-              ></NumberPickButton>
-            </View>
+              }}
+              disabled={
+                numbers[index]?.length == 12 &&
+                !numbers[index]?.includes(num.item)
+              }
+            ></NumberPickButton>
           )}
           keyExtractor={(_, index) => index.toString()}
         ></FlatList>
@@ -150,8 +149,6 @@ function RefreshButton(props: PressableProps) {
   );
 }
 
-type RefreshButtonProps = PressableProps;
-
 function NumberPickButton(props: NumberPickButtonProps) {
   const { active, number, ...rest } = props;
   const size = 34;
@@ -179,7 +176,7 @@ function NumberPickButton(props: NumberPickButtonProps) {
   );
 }
 
-interface NumberPickButtonProps extends Omit<PressableProps, "className"> {
+interface NumberPickButtonProps extends PressableProps {
   active: boolean;
   number: number;
 }
