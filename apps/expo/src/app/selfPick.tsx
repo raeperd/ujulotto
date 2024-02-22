@@ -1,4 +1,5 @@
 import type { PressableProps, ViewProps } from "react-native";
+import type { SvgProps } from "react-native-svg";
 import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,6 +31,7 @@ function SelfPickBoard(props: ViewProps) {
     [...row].sort((left, right) => left - right).slice(0, 6),
   );
   const rowLabels = ["A", "B", "C", "D", "E"];
+  const isFull = numbers.every((row) => row.length == 12);
 
   return (
     <View {...props}>
@@ -72,7 +74,7 @@ function SelfPickBoard(props: ViewProps) {
           keyExtractor={(_, index) => index.toString()}
         ></FlatList>
       </View>
-      <View className="mt-2.5 items-center rounded-[14] bg-black px-[21] py-5">
+      <View className="relative mt-2.5 items-center rounded-[14] bg-black px-[21] pb-[34] pt-5">
         <FlatList
           className="flex-row flex-wrap"
           data={Array.from({ length: 45 }, (_, i) => i + 1)}
@@ -106,6 +108,34 @@ function SelfPickBoard(props: ViewProps) {
           )}
           keyExtractor={(_, index) => index.toString()}
         ></FlatList>
+        <View className="absolute bottom-[20] right-[20] flex-row gap-[10]">
+          <Pressable
+            className="rounded-[4] bg-[#474747] px-[15] py-[6]"
+            onPress={() => {
+              setNumbers((prev) => {
+                const next = [...prev];
+                while ((next[index]?.length ?? 0) < 12) {
+                  const num = Math.floor(Math.random() * 45) + 1;
+                  if (!next[index]?.includes(num)) {
+                    next[index] = [...(next[index] ?? []), num];
+                  }
+                }
+                return next;
+              });
+              setIndex((prev) => (prev + 1) % 5);
+            }}
+          >
+            <Text className="text-sm text-white">자동</Text>
+          </Pressable>
+          <Pressable
+            className={`${
+              isFull ? "bg-point" : "bg-[#474747] opacity-40"
+            } flex-row items-center gap-[11] rounded-[4] px-[15] py-[6]`}
+          >
+            <Text className="text-sm text-white">완성</Text>
+            <SvgNext></SvgNext>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -180,3 +210,14 @@ interface NumberPickButtonProps extends PressableProps {
   active: boolean;
   number: number;
 }
+
+const SvgNext = (props: SvgProps) => (
+  <Svg width={8} height={14} fill="none" {...props}>
+    <Path
+      fill="#fff"
+      fillRule="evenodd"
+      d="M.243 1.899c-.353-.322-.317-.816.08-1.102.38-.274.952-.26 1.31.025l.047.04L7.7 6.36c.4.364.4.914 0 1.278l-6.02 5.499c-.353.322-.96.351-1.357.065-.38-.274-.43-.737-.124-1.06l.044-.042 5.352-4.888a.278.278 0 0 0 0-.426L.243 1.899Z"
+      clipRule="evenodd"
+    />
+  </Svg>
+);
