@@ -57,7 +57,16 @@ function SelfPickBoard(props: ViewProps) {
                   ></NumberBallOrEmpty>
                 ))}
               </Pressable>
-              <RefreshButton disabled={row.item != index}></RefreshButton>
+              <RefreshButton
+                disabled={row.item != index}
+                onPress={() =>
+                  setNumbers((prev) => {
+                    const next = [...prev];
+                    next[row.item] = Array.from({ length: 6 }, () => 46);
+                    return next;
+                  })
+                }
+              ></RefreshButton>
             </View>
           )}
           keyExtractor={(_, index) => index.toString()}
@@ -85,6 +94,10 @@ function SelfPickBoard(props: ViewProps) {
                     return next;
                   });
                 }}
+                disabled={
+                  numbers[index]?.length == 12 &&
+                  !numbers[index]?.includes(num.item)
+                }
               ></NumberPickButton>
             </View>
           )}
