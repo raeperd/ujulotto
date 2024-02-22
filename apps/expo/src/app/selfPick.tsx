@@ -83,9 +83,10 @@ function SelfPickBoard(props: ViewProps) {
                 active={numbers[index]?.includes(num.item) ?? false}
                 number={num.item}
                 onPress={() => {
+                  const included = numbers[index]?.includes(num.item);
                   setNumbers((prev) => {
                     const next = [...prev];
-                    if (numbers[index]?.includes(num.item)) {
+                    if (included) {
                       next[index] =
                         next[index]?.filter((n) => n !== num.item) ?? [];
                     } else {
@@ -93,6 +94,9 @@ function SelfPickBoard(props: ViewProps) {
                     }
                     return next;
                   });
+                  if (!included && numbers[index]?.length == 11) {
+                    setIndex((prev) => (prev + 1) % 5);
+                  }
                 }}
                 disabled={
                   numbers[index]?.length == 12 &&
