@@ -125,8 +125,8 @@ function NumberPickCarousel() {
   const modes = [
     {
       name: "직접조합",
-      description: "최대 6개 번호를 무작위로 랜덤 추첨합니다.",
-      cover: require("./images/cover-random-pick.png"),
+      description: "6개의 모든 번호를 직접 뽑아 조합하는 방식이에요.",
+      cover: require("./images/cover-custom-pick.png"),
     },
     {
       name: "랜덤뽑기",
@@ -191,32 +191,23 @@ function NumberPickCarousel() {
                 {item.name === "우주추천" && <IconUniverse></IconUniverse>}
               </View>
               <Text className="mt-1 h-12 text-white">{item.description}</Text>
-              {index != 0 ? (
-                <View className="flex-1 items-center">
-                  <Image
-                    source={item.cover}
-                    style={{ width: 300, height: 200, borderRadius: 10 }}
-                  ></Image>
-                  <Pressable className="mt-5 w-full rounded-xl bg-white">
-                    <Link
-                      href={{
-                        pathname: "/generates/[mode]",
-                        params: { mode: item.name },
-                      }}
-                      className="py-4 text-center font-bold text-black"
-                    >
-                      번호 뽑기
-                    </Link>
-                  </Pressable>
-                </View>
-              ) : (
+              <View className="mt-[13] flex-1 items-center">
+                <Image
+                  source={item.cover}
+                  style={{ width: 300, height: 200, borderRadius: 10 }}
+                ></Image>
+              </View>
+              <Pressable className="w-full rounded-xl bg-white">
                 <Link
-                  href={{ pathname: "/selfPick" }}
-                  className="text-center text-5xl font-extrabold text-red-400"
+                  href={{
+                    pathname: "/generates/[mode]",
+                    params: { mode: item.name },
+                  }}
+                  className="py-4 text-center font-bold text-black"
                 >
-                  직접조합
+                  번호 뽑기
                 </Link>
-              )}
+              </Pressable>
             </View>
           )}
         />
