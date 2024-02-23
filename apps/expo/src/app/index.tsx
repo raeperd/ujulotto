@@ -48,15 +48,23 @@ function NotificationBar(props: ViewProps) {
   const padZero = (num: number) => num.toString().padStart(2, "0");
   return (
     <View
-      className={`bg-point h-10 flex-row items-center justify-between rounded-3xl px-4 ${className}`}
+      className={`${
+        isDeadline ? "bg-gray_5" : "bg-point"
+      } h-10 flex-row items-center justify-between rounded-3xl px-4 ${className}`}
       {...rest}
     >
-      <View className="flex-row items-center gap-1">
-        <Image source={require("./images/clock.png")}></Image>
-        <Text className="font-semibold text-white">{`${days}일 ${padZero(
-          hours,
-        )}:${padZero(minutes)}:${padZero(seconds)}`}</Text>
-      </View>
+      {isDeadline ? (
+        <View>
+          <Text className="text-white">일요일 오전 6시까지 판매 정지</Text>
+        </View>
+      ) : (
+        <View className="flex-row items-center gap-1">
+          <Image source={require("./images/clock.png")}></Image>
+          <Text className="font-semibold text-white">{`${days}일 ${padZero(
+            hours,
+          )}:${padZero(minutes)}:${padZero(seconds)}`}</Text>
+        </View>
+      )}
       <Link href={"/notification"}>
         <View className="flex-row items-center gap-2">
           <Image source={require("./images/bell.png")}></Image>
