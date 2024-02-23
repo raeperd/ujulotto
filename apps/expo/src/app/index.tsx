@@ -1,6 +1,6 @@
 import type { ViewProps } from "react-native";
 import type { ICarouselInstance } from "react-native-reanimated-carousel";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -42,7 +42,10 @@ export default function Index() {
 }
 
 function NotificationBar(props: ViewProps) {
+  const { days, hours, minutes, seconds } = useCountdown(nextPickDate());
+  const isDeadline = 6 == days && 10 < hours;
   const { className, ...rest } = props;
+  const padZero = (num: number) => num.toString().padStart(2, "0");
   return (
     <View
       className={`bg-point h-10 flex-row items-center justify-between rounded-3xl px-4 ${className}`}
@@ -50,7 +53,9 @@ function NotificationBar(props: ViewProps) {
     >
       <View className="flex-row items-center gap-1">
         <Image source={require("./images/clock.png")}></Image>
-        <Text className="text-white">3일 21:05:22</Text>
+        <Text className="font-semibold text-white">{`${days}일 ${padZero(
+          hours,
+        )}:${padZero(minutes)}:${padZero(seconds)}`}</Text>
       </View>
       <Link href={"/notification"}>
         <View className="flex-row items-center gap-2">
@@ -60,6 +65,44 @@ function NotificationBar(props: ViewProps) {
       </Link>
     </View>
   );
+}
+
+function useCountdown(targetDate: Date) {
+  const targetDateTime = new Date(targetDate).getTime();
+
+  const [countDown, setCountDown] = useState(
+    targetDateTime - new Date().getTime(),
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountDown((countDown) => countDown - 1000);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [targetDateTime]);
+
+  const days = Math.floor(countDown / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  );
+  const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((countDown % (1000 * 60)) / 1000);
+
+  return {
+    days: days,
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+  };
+}
+
+function nextPickDate() {
+  const now = new Date();
+  const nextPickDate = new Date(now);
+  nextPickDate.setDate(now.getDate() + ((7 + 6 - now.getDay()) % 7));
+  nextPickDate.setHours(20, 0, 0, 0);
+  return nextPickDate;
 }
 
 function BannerCarousel(props: ViewProps) {
