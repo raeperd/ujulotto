@@ -11,8 +11,9 @@ import {
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
+import IconNext from "../components/IconNext";
 import IconUniverse from "../components/IconUniverse";
 import NumberBall from "../components/NumberBall";
 
@@ -31,12 +32,15 @@ export default function Index() {
               <Image source={require("./images/bell-arrow.png")}></Image>
             </View>
           </View>
-          <View className="mt-6 flex-row items-center gap-2">
+          <Pressable
+            className="mt-6 flex-row items-center gap-2"
+            onPress={() => router.push("/login")}
+          >
             <Text className="text-xl font-semibold text-white">
               로그인 해주세요
             </Text>
-            <Image source={require("./images/arrow.png")}></Image>
-          </View>
+            <IconNext className=""></IconNext>
+          </Pressable>
           <BannerCarousel className="mt-5 items-center"></BannerCarousel>
         </View>
         <NumberPickCarousel></NumberPickCarousel>
