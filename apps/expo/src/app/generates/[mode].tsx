@@ -14,16 +14,16 @@ import {
 import Animated, { FadeIn } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { ClipPath, Defs, G, Path } from "react-native-svg";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 
 import type { GenerationMode } from "../../types/type";
 import NumberBall from "../../components/NumberBall";
 import RouteBackButton from "../../components/RouteBackButton";
 
 export default function GeneratedNumber() {
-  const { mode, nums } = useLocalSearchParams<{
+  const { mode, nums } = useGlobalSearchParams<{
     mode: GenerationMode;
-    nums: string;
+    nums?: string;
   }>();
   const [numbers, setNumbers] = useState<number[]>([]);
   const { height } = useWindowDimensions();
@@ -31,11 +31,14 @@ export default function GeneratedNumber() {
   const [openSaveModal, setOpenSaveModal] = useState(false);
 
   useEffect(() => {
+    let firstNumbers: number[] = [];
     if (nums && 0 < nums.length) {
-      setNumbers(nums.split(",").map((v) => parseInt(v)));
-      return;
+      firstNumbers = nums.split(",").map((v) => parseInt(v));
+    } else {
+      firstNumbers = generateNumbersForTimes(mode, 5);
     }
-    setNumbers(generateNumbersForTimes(mode, 5));
+    setNumbers(firstNumbers);
+    return;
   }, [mode, nums]);
 
   const formatNow = () => {
@@ -225,6 +228,9 @@ function generateNumbersForTimes(
   mode: GenerationMode,
   times: number,
 ): number[] {
+  if (!mode) {
+    return [];
+  }
   const numbers = [];
   for (let i = 0; i < times; i++) {
     numbers.push(...generateNumbers(mode));
