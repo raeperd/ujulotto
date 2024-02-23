@@ -22,16 +22,7 @@ export default function Index() {
     <SafeAreaView className="bg-black_2 flex-1">
       <ScrollView>
         <View className="p-4">
-          <View className="bg-point h-10 flex-row items-center justify-between rounded-3xl px-4">
-            <View className="flex-row items-center gap-1">
-              <Image source={require("./images/clock.png")}></Image>
-              <Text className="text-white">3일 21:05:22</Text>
-            </View>
-            <View className="flex-row items-center gap-2">
-              <Image source={require("./images/bell.png")}></Image>
-              <Image source={require("./images/bell-arrow.png")}></Image>
-            </View>
-          </View>
+          <NotificationBar></NotificationBar>
           <Link href={"/login"} asChild>
             <Pressable className="mt-6 flex-row items-center gap-2">
               <Text className="text-xl font-semibold text-white">
@@ -47,6 +38,27 @@ export default function Index() {
         <RealtimeNumberThread></RealtimeNumberThread>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+function NotificationBar(props: ViewProps) {
+  const { className, ...rest } = props;
+  return (
+    <View
+      className={`bg-point h-10 flex-row items-center justify-between rounded-3xl px-4 ${className}`}
+      {...rest}
+    >
+      <View className="flex-row items-center gap-1">
+        <Image source={require("./images/clock.png")}></Image>
+        <Text className="text-white">3일 21:05:22</Text>
+      </View>
+      <Link href={"/notification"}>
+        <View className="flex-row items-center gap-2">
+          <Image source={require("./images/bell.png")}></Image>
+          <Image source={require("./images/bell-arrow.png")}></Image>
+        </View>
+      </Link>
+    </View>
   );
 }
 

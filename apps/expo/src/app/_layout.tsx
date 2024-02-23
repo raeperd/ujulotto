@@ -74,6 +74,12 @@ export default function RootLayout() {
             href: null,
           }}
         />
+        <Tabs.Screen
+          name="notification"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </TRPCProvider>
   );
