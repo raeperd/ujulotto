@@ -202,15 +202,24 @@ function NumberPickCarousel() {
                 ></Image>
               </View>
               <Pressable className="w-full rounded-xl bg-white">
-                <Link
-                  href={{
-                    pathname: "/generates/[mode]",
-                    params: { mode: item.name },
-                  }}
-                  className="py-4 text-center font-bold text-black"
-                >
-                  번호 뽑기
-                </Link>
+                {item.name != "직접조합" ? (
+                  <Link
+                    href={{
+                      pathname: "/generates/[mode]",
+                      params: { mode: item.name },
+                    }}
+                    className="py-4 text-center font-bold text-black"
+                  >
+                    번호 뽑기
+                  </Link>
+                ) : (
+                  <Link
+                    href="/selfPick"
+                    className="py-4 text-center font-bold text-black"
+                  >
+                    직접 뽑기
+                  </Link>
+                )}
               </Pressable>
             </View>
           )}
