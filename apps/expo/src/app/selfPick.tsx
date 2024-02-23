@@ -14,8 +14,7 @@ export default function SelfPick() {
   return (
     <SafeAreaView className="bg-point flex-1 px-[10]">
       <View className="flex-row items-center">
-        <RouteBackButton></RouteBackButton>
-        <Text className="font-medium text-white">직접조합</Text>
+        <RouteBackButton>직접조합</RouteBackButton>
       </View>
       <SelfPickBoard className="w-full"></SelfPickBoard>
     </SafeAreaView>

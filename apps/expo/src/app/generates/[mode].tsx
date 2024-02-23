@@ -31,7 +31,7 @@ export default function GeneratedNumber() {
   const [openSaveModal, setOpenSaveModal] = useState(false);
 
   useEffect(() => {
-    if (0 < nums.length) {
+    if (nums && 0 < nums.length) {
       setNumbers(nums.split(",").map((v) => parseInt(v)));
       return;
     }

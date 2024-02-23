@@ -1,5 +1,5 @@
 import type { PressableProps } from "react-native";
-import { Pressable } from "react-native";
+import { Pressable, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { router } from "expo-router";
 
@@ -8,7 +8,7 @@ export default function RouteBackButton(props: RouteBackButtonProps) {
   return (
     <Pressable
       onPress={() => router.back()}
-      className={`py-4 ${className}`}
+      className={`flex-row gap-1 py-4 ${className}`}
       {...rest}
     >
       <Svg width={24} height={24} fill="none">
@@ -19,8 +19,15 @@ export default function RouteBackButton(props: RouteBackButtonProps) {
           clipRule="evenodd"
         />
       </Svg>
+      {props.children ? (
+        <Text className="text-base font-medium text-white">
+          {props.children}
+        </Text>
+      ) : null}
     </Pressable>
   );
 }
 
-type RouteBackButtonProps = Omit<PressableProps, "onPress">;
+interface RouteBackButtonProps extends Omit<PressableProps, "onPress"> {
+  children?: string;
+}
