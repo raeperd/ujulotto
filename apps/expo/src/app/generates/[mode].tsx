@@ -53,9 +53,17 @@ export default function GeneratedNumber() {
       <RouteBackButton></RouteBackButton>
       <View className="items-center">
         <ImageBackground
-          source={require("../images/cover-generated.png")}
-          className={`w-full items-center`}
-          style={{ height: (height / 100) * 55 }}
+          source={
+            mode === "우주추천"
+              ? require("../images/cover-generated-universe.png")
+              : require("../images/cover-generated.png")
+          }
+          style={{
+            width: "100%",
+            height: (height / 100) * 55,
+            alignItems: "center",
+          }}
+          imageStyle={{ resizeMode: "cover", borderRadius: 20 }}
         >
           <Text className="pt-10 text-center text-3xl font-semibold text-white">
             {mode}
