@@ -1,7 +1,7 @@
 import type { ModalProps, PressableProps } from "react-native";
 import type { SvgProps } from "react-native-svg";
 import type { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FlatList,
   ImageBackground,
@@ -14,6 +14,8 @@ import {
 import Animated, { FadeIn } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { ClipPath, Defs, G, Path } from "react-native-svg";
+import { captureRef } from "react-native-view-shot";
+import * as MediaLibrary from "expo-media-library";
 import { router, useGlobalSearchParams } from "expo-router";
 
 import type { GenerationMode } from "../../types/type";
@@ -29,6 +31,7 @@ export default function GeneratedNumber() {
   const { height } = useWindowDimensions();
   const [retry, setRetry] = useState(0);
   const [openSaveModal, setOpenSaveModal] = useState(false);
+  const ref = useRef<ImageBackground>(null);
 
   useEffect(() => {
     let firstNumbers: number[] = [];
@@ -53,6 +56,7 @@ export default function GeneratedNumber() {
       <RouteBackButton></RouteBackButton>
       <View className="items-center">
         <ImageBackground
+          ref={ref}
           source={
             mode === "우주추천"
               ? require("../images/cover-generated-universe.png")
@@ -113,6 +117,7 @@ export default function GeneratedNumber() {
           animationType="slide"
           transparent
           onRequestClose={() => setOpenSaveModal(false)}
+          imageRef={ref}
         ></SaveNumbersModal>
       )}
     </SafeAreaView>
@@ -136,11 +141,32 @@ interface BottomButtonProps extends Omit<PressableProps, "children"> {
   children: string;
 }
 
-function SaveNumbersModal(props: ModalProps) {
+function SaveNumbersModal({
+  imageRef,
+  ...props
+}: ModalProps & { imageRef: React.RefObject<ImageBackground> }) {
   const icons = [
-    { name: "카카오톡 공유", Icon: IconKakaoTalk },
-    { name: "클립보드 복사", Icon: IconClipboard },
-    { name: "이미지 저장", Icon: IconSaveImage },
+    { name: "카카오톡 공유", Icon: IconKakaoTalk, onPress: () => {} },
+    { name: "클립보드 복사", Icon: IconClipboard, onPress: () => {} },
+    {
+      name: "이미지 저장",
+      Icon: IconSaveImage,
+      onPress: async () => {
+        try {
+          const localUri = await captureRef(imageRef, {
+            height: 440,
+            quality: 1,
+          });
+
+          await MediaLibrary.saveToLibraryAsync(localUri);
+          if (localUri) {
+            alert("Saved!");
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      },
+    },
   ];
 
   return (
@@ -158,12 +184,16 @@ function SaveNumbersModal(props: ModalProps) {
           </Pressable>
           <View className="flex-shrink-0 flex-row justify-center gap-[22]">
             {icons.map((item, index) => (
-              <View className="flex items-center gap-2.5" key={index}>
+              <Pressable
+                className="flex items-center gap-2.5"
+                key={index}
+                onPress={item.onPress}
+              >
                 <IconBackground>
                   <item.Icon></item.Icon>
                 </IconBackground>
                 <Text className="text-center text-white">{item.name}</Text>
-              </View>
+              </Pressable>
             ))}
           </View>
         </View>
