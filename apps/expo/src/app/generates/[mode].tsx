@@ -15,6 +15,7 @@ import Animated, { FadeIn } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { ClipPath, Defs, G, Path } from "react-native-svg";
 import { captureRef } from "react-native-view-shot";
+import * as Clipboard from "expo-clipboard";
 import * as MediaLibrary from "expo-media-library";
 import { router, useGlobalSearchParams } from "expo-router";
 
@@ -117,6 +118,7 @@ export default function GeneratedNumber() {
           animationType="slide"
           transparent
           onRequestClose={() => setOpenSaveModal(false)}
+          numbers={numbers}
           imageRef={ref}
         ></SaveNumbersModal>
       )}
@@ -142,12 +144,33 @@ interface BottomButtonProps extends Omit<PressableProps, "children"> {
 }
 
 function SaveNumbersModal({
+  numbers,
   imageRef,
   ...props
-}: ModalProps & { imageRef: React.RefObject<ImageBackground> }) {
+}: ModalProps & {
+  numbers: number[];
+  imageRef: React.RefObject<ImageBackground>;
+}) {
   const icons = [
     { name: "카카오톡 공유", Icon: IconKakaoTalk, onPress: () => {} },
-    { name: "클립보드 복사", Icon: IconClipboard, onPress: () => {} },
+    {
+      name: "클립보드 복사",
+      Icon: IconClipboard,
+      onPress: async () => {
+        const text = `
+우주로또 - 우주가 선택한 이번주의 주인공은 바로 나!
+${numbers
+  .map((n, i) => {
+    if (i % 6 === 5) {
+      return `${n}\n`;
+    }
+    return `${n}, `;
+  })
+  .join("")}`;
+        await Clipboard.setStringAsync(text);
+        alert("Copied!");
+      },
+    },
     {
       name: "이미지 저장",
       Icon: IconSaveImage,
